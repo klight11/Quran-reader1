@@ -71,6 +71,15 @@ button{font:inherit;color:inherit}
 .prog i{display:block;height:100%;width:0;background:var(--primary);transition:width .25s}
 .note{font-size:12.5px;color:var(--muted);line-height:1.5}
 #offs{margin:4px 0;font-size:14px}
+#pl{position:fixed;left:0;right:0;bottom:0;z-index:15;display:flex;align-items:center;gap:4px;max-width:720px;margin:0 auto;padding:8px 10px calc(8px + env(safe-area-inset-bottom));background:var(--primary);color:var(--on-primary);border-radius:16px 16px 0 0;box-shadow:0 -2px 12px rgba(0,0,0,.25)}
+#pl[hidden]{display:none}
+#pl .pi{flex:1;min-width:0;display:flex;flex-direction:column;padding-left:6px}
+#pl .pi b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:15px}
+#pl .pi small{opacity:.85;font-size:12px}
+#pl .ib{min-width:44px;height:44px;font-size:18px}
+#pl #plp{background:rgba(255,255,255,.2);font-size:17px}
+.v.playing{background:var(--hl);border-radius:10px;padding-left:8px;padding-right:8px}
+body.hasplayer .wrap{padding-bottom:110px}
 #toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);background:#222;color:#fff;padding:9px 16px;border-radius:20px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:30}
 #toast.on{opacity:1}
 </style>
@@ -95,9 +104,16 @@ button{font:inherit;color:inherit}
     <div class="prog"><i id="pbar"></i></div>
     <button class="btn" data-act="dl" style="width:100%">Download the whole Quran (about 2 MB)</button>
     <h3>About</h3>
-    <p class="note">Arabic text: Uthmani script from the Tanzil project, delivered by the Al Quran Cloud service. English: Sahih International. Please check anything important against a printed mushaf.</p>
+    <p class="note">Arabic text: Uthmani script from the Tanzil project, delivered by the Al Quran Cloud service. English: Sahih International. Recitation: Sheikh Maher Al-Muaiqly, streamed from EveryAyah.com (needs internet). Please check anything important against a printed mushaf.</p>
     <button class="btn ghost" data-act="closeSheet" style="width:100%;margin-top:10px">Done</button>
   </div>
+</div>
+<div id="pl" role="region" aria-label="Recitation player" hidden>
+  <div class="pi"><b id="plt"></b><small>Maher Al-Muaiqly</small></div>
+  <button class="ib" data-act="pprev" aria-label="Previous verse">⏮</button>
+  <button class="ib" id="plp" data-act="ptoggle" aria-label="Play or pause">▶</button>
+  <button class="ib" data-act="pnext" aria-label="Next verse">⏭</button>
+  <button class="ib" data-act="pstop" aria-label="Close player">✕</button>
 </div>
 <div id="toast" role="status"></div>
 <script src="app.js"></script>

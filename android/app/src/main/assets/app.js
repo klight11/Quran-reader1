@@ -304,6 +304,100 @@
     });
   }
 
+  // ---------- Recitation (Maher Al-Muaiqly) ----------
+  // Verse audio is streamed from EveryAyah.com, with the Al Quran Cloud CDN as a backup source.
+  var OFF = [0];
+  META.forEach(function (m, i) { OFF[i + 1] = OFF[i] + m.n; });
+  var pad3 = function (n) { return ('00' + n).slice(-3); };
+  function audioUrls(sn, a) {
+    if (a === 0) return ['https://everyayah.com/data/Maher_AlMuaiqly_64kbps/001001.mp3',
+                         'https://cdn.islamic.network/quran/audio/128/ar.mahermuaiqly/1.mp3'];
+    return ['https://everyayah.com/data/Maher_AlMuaiqly_64kbps/' + pad3(sn) + pad3(a) + '.mp3',
+            'https://cdn.islamic.network/quran/audio/128/ar.mahermuaiqly/' + (OFF[sn - 1] + a) + '.mp3'];
+  }
+  var AU = { el: new Audio(), s: 0, a: 0, on: false, src: 0 };
+  AU.el.preload = 'auto';
+
+  function auMark() {
+    document.querySelectorAll('.v.playing').forEach(function (v) { v.classList.remove('playing'); });
+    var pl = $('#pl');
+    if (!AU.s) { if (pl) pl.hidden = true; document.body.classList.remove('hasplayer'); return; }
+    document.body.classList.add('hasplayer');
+    if (pl) {
+      pl.hidden = false;
+      $('#plt').textContent = META[AU.s - 1].en + ' · ' + (AU.a === 0 ? 'Bismillah' : 'verse ' + AU.a);
+      $('#plp').textContent = AU.on ? '❚❚' : '▶';
+    }
+    if (AU.a > 0 && curSurah === AU.s) {
+      var el = document.getElementById('v' + AU.a);
+      if (el) {
+        el.classList.add('playing');
+        var r = el.getBoundingClientRect();
+        if (r.top < 70 || r.bottom > window.innerHeight - 90) el.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      }
+    }
+  }
+  function auLoad() {
+    var u = audioUrls(AU.s, AU.a);
+    AU.el.src = u[AU.src] || u[0];
+    var pr = AU.el.play();
+    if (pr && pr.catch) pr.catch(function (e) { if (e && e.name === 'NotAllowedError') { AU.on = false; auMark(); } });
+    if ('mediaSession' in navigator) {
+      try {
+        navigator.mediaSession.metadata = new MediaMetadata({
+          title: META[AU.s - 1].en + (AU.a ? ' · verse ' + AU.a : ''), artist: 'Maher Al-Muaiqly', album: 'Quran Reader'
+        });
+      } catch (e) { /* optional */ }
+    }
+  }
+  function auPlay(sn, a) {
+    AU.s = sn; AU.a = a; AU.on = true; AU.src = 0;
+    auLoad(); auMark();
+  }
+  function auStart(sn, a) {
+    // From verse 1 the recitation opens with the Bismillah (except surahs 1 and 9), as the reciter does.
+    auPlay(sn, (a === 1 && sn !== 1 && sn !== 9) ? 0 : a);
+  }
+  function auStop() {
+    AU.el.pause(); AU.on = false; AU.s = 0; AU.a = 0;
+    AU.el.removeAttribute('src');
+    auMark();
+  }
+  function auNext() {
+    if (!AU.s) return;
+    if (AU.a >= META[AU.s - 1].n) { auStop(); return; }
+    auPlay(AU.s, AU.a + 1);
+  }
+  function auPrev() {
+    if (!AU.s) return;
+    if (AU.a > 1) auPlay(AU.s, AU.a - 1);
+    else if (AU.a === 1 && AU.s !== 1 && AU.s !== 9) auPlay(AU.s, 0);
+    else auPlay(AU.s, AU.a === 0 ? 0 : 1);
+  }
+  function auToggle() {
+    if (!AU.s) return;
+    if (AU.on) { AU.el.pause(); AU.on = false; }
+    else { AU.on = true; var pr = AU.el.play(); if (pr && pr.catch) pr.catch(function () {}); }
+    auMark();
+  }
+  AU.el.addEventListener('ended', auNext);
+  AU.el.addEventListener('error', function () {
+    if (!AU.s) return;
+    if (AU.src === 0) { AU.src = 1; auLoad(); return; }
+    toast('Could not load the recitation. Check your internet connection.');
+    auStop();
+  });
+  AU.el.addEventListener('play', function () { AU.on = true; auMark(); });
+  AU.el.addEventListener('pause', function () { if (AU.s && !AU.el.ended) { AU.on = false; auMark(); } });
+  if ('mediaSession' in navigator) {
+    try {
+      navigator.mediaSession.setActionHandler('play', auToggle);
+      navigator.mediaSession.setActionHandler('pause', auToggle);
+      navigator.mediaSession.setActionHandler('nexttrack', auNext);
+      navigator.mediaSession.setActionHandler('previoustrack', auPrev);
+    } catch (e) { /* optional */ }
+  }
+
   // ---------- UI ----------
   var app = $('#app');
   var navToken = 0;
@@ -326,6 +420,7 @@
   }
 
   function showList() {
+    auStop();
     navToken++; if (io) io.disconnect();
     document.title = 'Quran Reader';
     var last = LS.get('last', null);
@@ -362,12 +457,14 @@
 
   function showSurah(n, a) {
     var token = ++navToken; if (io) io.disconnect();
+    if (AU.s && AU.s !== n) auStop();
     curSurah = n;
     var m = META[n - 1];
     document.title = m.en + ' – Quran Reader';
     app.innerHTML =
       '<header class="bar"><button class="ib" data-act="back" aria-label="Back">←</button>' +
       '<div class="ttl"><b>' + n + '. ' + esc(m.en) + '</b><span class="art" lang="ar">' + esc(m.ar) + '</span></div>' +
+      '<button class="ib" data-act="playall" aria-label="Play recitation">🎧</button>' +
       '<button class="ib" data-act="settings" aria-label="Settings">Aa</button></header>' +
       '<main class="wrap" id="body"><p class="state">Loading…</p></main>';
     window.scrollTo(0, 0);
@@ -385,13 +482,14 @@
         h += '<article class="v" id="v' + (i + 1) + '" data-a="' + (i + 1) + '">' +
           '<div class="ar" lang="ar" dir="rtl">' + esc(s.ar[i]) + ' <span class="vm">' + arNum(i + 1) + '</span></div>' +
           (s.en ? '<p class="tr"><span class="tn">' + k + '</span> ' + esc(s.en[i]) + '</p>' : '') +
-          '<div class="vt"><button data-act="bm" data-k="' + k + '" class="' + (on ? 'on' : '') + '">' + (on ? '★ Saved' : '☆ Bookmark') + '</button>' +
+          '<div class="vt"><button data-act="play" data-a="' + (i + 1) + '">▶ Play</button><button data-act="bm" data-k="' + k + '" class="' + (on ? 'on' : '') + '">' + (on ? '★ Saved' : '☆ Bookmark') + '</button>' +
           '<button data-act="share" data-k="' + k + '">Share</button></div></article>';
       }
       h += '<nav class="pn">' +
         (n > 1 ? '<a class="btn ghost" href="#/s/' + (n - 1) + '">← ' + esc(META[n - 2].en) + '</a>' : '<span></span>') +
         (n < 114 ? '<a class="btn" href="#/s/' + (n + 1) + '">' + esc(META[n].en) + ' →</a>' : '<span></span>') + '</nav>';
       $('#body').innerHTML = h;
+      auMark();
       if (a && a > 1) {
         var el = document.getElementById('v' + a);
         if (el) { el.classList.add('flash'); el.scrollIntoView(); }
@@ -407,6 +505,7 @@
   }
 
   function showBookmarks() {
+    auStop();
     navToken++; if (io) io.disconnect();
     document.title = 'Bookmarks – Quran Reader';
     var list = LS.get('bm', []);
@@ -472,6 +571,12 @@
     var act = b.dataset.act, k = b.dataset.k;
     if (act === 'settings') openSheet();
     else if (act === 'closeSheet') closeSheet();
+    else if (act === 'play') auStart(curSurah, +b.dataset.a);
+    else if (act === 'playall') { if (AU.s === curSurah) auToggle(); else auStart(curSurah, 1); }
+    else if (act === 'ptoggle') auToggle();
+    else if (act === 'pnext') auNext();
+    else if (act === 'pprev') auPrev();
+    else if (act === 'pstop') auStop();
     else if (act === 'back') { if (history.length > 1) history.back(); else location.hash = '#/'; }
     else if (act === 'retry') route();
     else if (act === 'theme') { S.theme = b.dataset.v; saveSettings(); refreshSheet(); }

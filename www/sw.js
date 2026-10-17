@@ -1,5 +1,5 @@
 // Caches the app shell so the reader opens offline. Verse text is stored separately (IndexedDB).
-const C = 'quran-shell-v1';
+const C = 'quran-shell-v2';
 const SHELL = ['./', 'index.html', 'app.js', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png'];
 
 self.addEventListener('install', e => {

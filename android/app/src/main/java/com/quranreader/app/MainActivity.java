@@ -51,6 +51,7 @@ public class MainActivity extends Activity {
         s.setAllowFileAccess(false);
         s.setAllowContentAccess(false);
         s.setSupportZoom(false);
+        s.setMediaPlaybackRequiresUserGesture(false); // lets the recitation continue verse to verse
 
         web.setWebViewClient(new WebViewClient() {
             @Override
