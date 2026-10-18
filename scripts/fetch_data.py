@@ -99,8 +99,8 @@ for bk, en_name, ar_name in BOOKS:
         return m
     A, E, U = bynum(ara), bynum(eng), bynum(urd)
     nums = sorted(set(A) | set(E), key=lambda x: float(x))
-    secE = eng['metadata'].get('section', {}) or {}
-    secA = ara['metadata'].get('section', {}) or {}
+    secE = eng['metadata'].get('sections', {}) or {}
+    secA = ara['metadata'].get('sections', {}) or {}
     groups = {}
     for n in nums:
         ref = (E.get(n) or A.get(n))['reference']
@@ -118,7 +118,7 @@ for bk, en_name, ar_name in BOOKS:
             rows.append([n, clean((a or {}).get('text')), clean((e or {}).get('text')), clean((u or {}).get('text')), ' / '.join(grades)])
         total += len(rows)
         dump('%s/data/hadith/%s/%s.json' % (ROOT, bk, sid), rows)
-        sections.append({'id': sid, 'en': clean(secE.get(sid, '')) or ('Section ' + sid), 'ar': clean(secA.get(sid, '')), 'n': len(rows)})
+        sections.append({'id': sid, 'en': clean(secE.get(sid, '')) or ('Introduction' if sid == '0' else 'Section ' + sid), 'ar': clean(secA.get(sid, '')), 'n': len(rows)})
     dump('%s/data/hadith/%s/index.json' % (ROOT, bk), {'id': bk, 'en': en_name, 'ar': ar_name, 'total': total, 'ur': bool(urd), 'sections': sections})
     index.append({'id': bk, 'en': en_name, 'ar': ar_name, 'total': total, 'ur': bool(urd), 'sections': len(sections)})
     manifest['hadith'][bk] = total
