@@ -9,8 +9,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Download Quran translations, hadith and fonts
-        run: python3 -u scripts/fetch_data.py www > fetch-log.txt 2>&1; echo "exit=$?" >> fetch-log.txt; ls -R www | head -50 >> fetch-log.txt; du -sh www/* >> fetch-log.txt 2>&1 || true
+        run: |
+          python3 -u scripts/fetch_data.py www > fetch-log.txt 2>&1 || echo "SCRIPT FAILED" >> fetch-log.txt
+          du -sh www/data www/fonts >> fetch-log.txt 2>&1 || true
       - name: Commit data in pieces
+        if: always()
         run: |
           git config user.name "github-actions"; git config user.email "actions@github.com"
           git status --short | head -5
