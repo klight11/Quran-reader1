@@ -1,124 +1,27 @@
-ara_jalaladdinalmah | Arabic | Jalal Ad Din Al Mahalli And Jalal Ad Din As Suyuti | rtl
-ara_kingfahadquranc_la | Arabic | King Fahad Quran Complex | ltr
-ara_kingfahadquranc | Arabic | King Fahad Quran Complex | rtl
-ara_quran_la | Arabic | Quran Transliteration | ltr
-ara_quran_la1 | Arabic | Quran Transliteration | ltr
-ara_quran_la2 | Arabic | Quran Transliteration | ltr
-ara_quran_la3 | Arabic | Quran Transliteration | ltr
-ara_quran_la4 | Arabic | Quran Transliteration | ltr
-ara_quran_la5 | Arabic | Quran Transliteration | ltr
-ara_quran_lad4 | Arabic | Quran Transliteration | ltr
-ara_quranacademy | Arabic | Quran Academy | rtl
-ara_quranbazzi | Arabic | Quran Bazzi | rtl
-ara_qurandoori | Arabic | Quran Doori | rtl
-ara_qurandoorinonun | Arabic | Quran Doori Non Unicode | rtl
-ara_quranindopak | Arabic | Quran Indopak | rtl
-ara_qurankhaledhosn | Arabic | Quran Khaled Hosney | rtl
-ara_qurannastaleeqn | Arabic | Quran Nastaleeq Non Unicode | rtl
-ara_quranphoneticst_la | Arabic | Quran Phonetics Transliteration | ltr
-ara_quranphoneticst | Arabic | Quran Phonetics Transliteration | ltr
-ara_quranqaloon | Arabic | Quran Qaloon | rtl
-ara_quranqumbul | Arabic | Quran Qumbul | rtl
-ara_quranshouba | Arabic | Quran Shouba | rtl
-ara_quransimple | Arabic | Quran Simple | rtl
-ara_quransoosi | Arabic | Quran Soosi | rtl
-ara_quransoosinonun | Arabic | Quran Soosi Non Unicode | rtl
-ara_quranspelled | Arabic | Quran Spelled | rtl
-ara_quranspellednod | Arabic | Quran Spelled No Diacritics | rtl
-ara_quranuthmanienc | Arabic | Quran Uthmani Enc | rtl
-ara_quranuthmanihaf | Arabic | Quran Uthmani Hafs | rtl
-ara_quranuthmanihaf1 | Arabic | Quran Uthmani Hafs No Diacritics | rtl
-ara_quranwarsh | Arabic | Quran Warsh | rtl
-ara_sirajtafseer | Arabic | Siraj Tafseer | rtl
-ara_sirajtafseernod | Arabic | Siraj Tafseer No Diacritics | rtl
-eng_abdelhaleem | English | Abdel Haleem | ltr
-eng_abdulhye | English | Abdul Hye | ltr
-eng_abdullahyusufal | English | Abdullah Yusuf Ali | ltr
-eng_abdulmajiddarya | English | Abdul Majid Daryabadi | ltr
-eng_abulalamaududi | English | Abul Ala Maududi | ltr
-eng_ahmedali | English | Ahmed Ali | ltr
-eng_aishabewley | English | Aisha Bewley | ltr
-eng_ajarberry | English | A. J. Arberry | ltr
-eng_albilalmuhammad | English | Al Bilal Muhammad Et Al | ltr
-eng_alibakhtiarinej | English | Ali Bakhtiari Nejad | ltr
-eng_aliquliqarai | English | Ali Quli Qarai | ltr
-eng_aliquliqarai1 | English | Ali Quli Qarai | ltr
-eng_aliunal | English | Ali Unal | ltr
-eng_almuntakhabfita | English | Almuntakhab Fi Tafsir Alquran Alkarim | ltr
-eng_drkamalomar | English | Dr Kamal Omar | ltr
-eng_drlalehbakhtiar | English | Dr Laleh Bakhtiar | ltr
-eng_drmunirmunshey | English | Dr Munir Munshey | ltr
-eng_edwardhenrypalm | English | Edward Henry Palmer | ltr
-eng_farookmalik | English | Farook Malik | ltr
-eng_georgesale | English | George Sale | ltr
-eng_hamidsaziz | English | Hamid S Aziz | ltr
-eng_johnmedowsrodwe | English | John Medows Rodwell | ltr
-eng_literal | English | Literal | ltr
-eng_maududi | English | Maududi | ltr
-eng_miraneesorigina | English | Mir Anees Original | ltr
-eng_miraneesuddin | English | Mir Aneesuddin | ltr
-eng_mohammadhabibsh | English | Mohammad Habib Shakir | ltr
-eng_mohammadshafi | English | Mohammad Shafi | ltr
-eng_mohammedmarmadu | English | Mohammed Marmaduke William Pickthall | ltr
-eng_muftitaqiusmani | English | Mufti Taqi Usmani | ltr
-eng_muhammadasad | English | Muhammad Asad | ltr
-eng_muhammadmahmoud | English | Muhammad Mahmoud Ghali | ltr
-eng_muhammadsarwar | English | Muhammad Sarwar | ltr
-eng_muhammadtaqiudd | English | Muhammad Taqi Ud Din Al Hilali And Muhammad Muhsin Khan | ltr
-eng_muhammadtaqiusm | English | Muhammad Taqi Usmani | ltr
-eng_mustafakhattaba | English | Mustafa Khattab Allah Edition | ltr
-eng_mustafakhattabg | English | Mustafa Khattab God Edition | ltr
-eng_njdawood | English | N J Dawood | ltr
-eng_rowwadtranslati | English | Rowwad Translation Center | ltr
-eng_safikaskas | English | Safi Kaskas | ltr
-eng_safiurrahmanalm | English | Safi Ur Rahman Al Mubarakpuri | ltr
-eng_shabbirahmed | English | Shabbir Ahmed | ltr
-eng_syedvickarahame | English | Syed Vickar Ahamed | ltr
-eng_talalaitaninewt | English | Talal A Itani New Translation | ltr
-eng_talalitani | English | Talal Itani | ltr
-eng_tbirving | English | Tbirving | ltr
-eng_themonotheistgr | English | The Monotheist Group Edition | ltr
-eng_themonotheistgr1 | English | The Monotheist Group Edition | ltr
-eng_thestudyquran | English | The Study Quran | ltr
-eng_ummmuhammad | English | Umm Muhammad | ltr
-eng_wahiduddinkhan | English | Wahiduddin Khan | ltr
-eng_yusufaliorig | English | Yusuf Ali Orig | ltr
-fas_abdolmohammaday | Persian | Abdolmohammad Ayati | rtl
-fas_abolfazlbahramp | Persian | Abolfazl Bahrampour | rtl
-fas_bahaoddinkhorra | Persian | Baha Oddin Khorramshahi | rtl
-fas_drhussientagi | Persian | Dr. Hussien Tagi | rtl
-fas_hussainansarian | Persian | Hussain Ansarian | rtl
-fas_islamhousecompe | Persian | Islamhouse.com Persian Team | rtl
-fas_mahdielahighoms | Persian | Mahdi Elahi Ghomshei | rtl
-fas_mohammadkazemmo | Persian | Mohammad Kazem Moezzi | rtl
-fas_mohammadmahdifo | Persian | Mohammad Mahdi Fooladvand | rtl
-fas_mohammadsadeqit | Persian | Mohammad Sadeqi Tehrani | rtl
-fas_mohsengharaati | Persian | Mohsen Gharaati | rtl
-fas_mostafakhorramd | Persian | Mostafa Khorramdel | rtl
-fas_nasermakaremshi | Persian | Naser Makarem Shirazi | rtl
-fas_sayyedjalaloddi | Persian | Sayyed Jalaloddin Mojtabavi | rtl
-fas_unknown | Persian | Unknown | rtl
-hin_maulanaazizulha_la | Hindi | Maulana Azizul Haque Al Umari | ltr
-hin_maulanaazizulha | Hindi | Maulana Azizul Haque Al Umari | ltr
-hin_muhammadfarooqk_la | Hindi | Muhammad Farooq Khan And Muhammad Ahmed | ltr
-hin_muhammadfarooqk | Hindi | Muhammad Farooq Khan And Muhammad Ahmed | ltr
-hin_suhelfarooqkhan_la | Hindi | Suhel Farooq Khan And Saifur Rahman Nadwi | ltr
-hin_suhelfarooqkhan | Hindi | Suhel Farooq Khan And Saifur Rahman Nadwi | ltr
-urd_abulaalamaududi_la | Urdu | Abul Ala Maududi | ltr
-urd_abulaalamaududi | Urdu | Abul A Ala Maududi | rtl
-urd_ahmedali | Urdu | Ahmed Ali | rtl
-urd_fatehmuhammadja | Urdu | Fateh Muhammad Jalandhry | rtl
-urd_mahmoodulhassan | Urdu | Mahmood Ul Hassan | rtl
-urd_muhammadhussain | Urdu | Muhammad Hussain Najafi | rtl
-urd_muhammadjunagar_la | Urdu | Muhammad Junagarhi | ltr
-urd_muhammadjunagar | Urdu | Muhammad Junagarhi | rtl
-urd_muhammadjunagar1 | Urdu | Muhammad Junagarhi, Muhammad Kazim | ltr
-urd_muhammadkaramsh | Urdu | Muhammad Karam Shah Al Azhari | rtl
-urd_muhammadtahirul | Urdu | Muhammad Tahir Ul Qadri | rtl
-urd_muhammadtaqiusm | Urdu | Muhammad Taqi Usmani | rtl
-urd_syedzeeshanhaid | Urdu | Syed Zeeshan Haider Jawadi | rtl
---- alquran.cloud status b'ERR HTTP Error 503: Service Temporarily Unavailable'
---- sample
-ara-quranuthmanihaf 6236 {'chapter': 1, 'verse': 1, 'text': 'بِسۡمِ ٱللَّهِ ٱلرَّحۡمَٰنِ ٱلرَّحِيمِ'} مِنَ ٱلۡجِنَّةِ وَٱلنَّاسِ
-hin-muhammadfarooqkhana fail b'ERR HTTP Error 404: Not Found'
-eng-ummmuhammad 6236 {'chapter': 1, 'verse': 1, 'text': 'In the name of Allah, the Entirely Merciful, the Especially Merciful'} From among the jinn and mankind
+ps.abdulwali /tanzil.net/trans/ps.abdulwali 1567343 6236 ['1|1|د الله په نامه سره (شروع كوم) چې ډېر زیات مهربان، بې حده رحم كوونكى دى']
+ps.abdulwali ?transID=ps.abdulwali&type=txt 1531202 6236 ['د الله په نامه سره (شروع كوم) چې ډېر زیات مهربان، بې حده رحم كوونكى دى']
+hi.hindi ps://tanzil.net/trans/hi.hindi 2413033 6236 ['1|1|अल्लाह के नाम से जो रहमान व रहीम है।']
+hi.hindi ans/?transID=hi.hindi&type=txt 2376892 6236 ['अल्लाह के नाम से जो रहमान व रहीम है।']
+fa.makarem ://tanzil.net/trans/fa.makarem 1510107 6236 ['1|1|به نام خداوند بخشنده بخشایشگر']
+fa.makarem s/?transID=fa.makarem&type=txt 1473966 6236 ['به نام خداوند بخشنده بخشایشگر']
+fa.ayati ps://tanzil.net/trans/fa.ayati 1195797 6236 ['1|1|به نام خداى بخشاينده مهربان\u200c']
+fa.ayati ans/?transID=fa.ayati&type=txt 1159656 6236 ['به نام خداى بخشاينده مهربان\u200c']
+en.sahih ps://tanzil.net/trans/en.sahih 898049 6236 ['1|1|In the name of Allah, the Entirely Merciful, the Especially Merciful.']
+en.sahih ans/?transID=en.sahih&type=txt 861908 6236 ['In the name of Allah, the Entirely Merciful, the Especially Merciful.']
+ur.jalandhry /tanzil.net/trans/ur.jalandhry 1450376 6236 ['1|1|شروع الله کا نام لے کر جو بڑا مہربان نہایت رحم والا ہے']
+ur.jalandhry ?transID=ur.jalandhry&type=txt 1414235 6236 ['شروع الله کا نام لے کر جو بڑا مہربان نہایت رحم والا ہے']
+ar.muyassar //tanzil.net/trans/ar.muyassar 2536347 6236 ['1|1|سورة الفاتحة سميت هذه السورة بالفاتحة؛ لأنه يفتتح بها القرآن العظيم، وتسمى المثاني؛ لأنها تقرأ في كل ركعة، ولها أسماء أخر. أبتدئ قراءة القرآن باسم الله مستعينا به، (اللهِ) علم على الرب -تبارك وتعالى- المعبود بحق دون سواه، وهو أخص أسماء الله تعالى، ولا يسمى به غيره سبحانه. (الرَّحْمَنِ) ذي الرحمة العامة الذي وسعت رحمته جميع الخلق، (الرَّحِيمِ) بالمؤمنين، وهما اسمان من أسمائه تعالى، يتضمنان إثبات صفة الرحمة لله تعالى كما يليق بجلاله.']
+ar.muyassar /?transID=ar.muyassar&type=txt 2500206 6236 ['سورة الفاتحة سميت هذه السورة بالفاتحة؛ لأنه يفتتح بها القرآن العظيم، وتسمى المثاني؛ لأنها تقرأ في كل ركعة، ولها أسماء أخر. أبتدئ قراءة القرآن باسم الله مستعينا به، (اللهِ) علم على الرب -تبارك وتعالى- المعبود بحق دون سواه، وهو أخص أسماء الله تعالى، ولا يسمى به غيره سبحانه. (الرَّحْمَنِ) ذي الرحمة العامة الذي وسعت رحمته جميع الخلق، (الرَّحِيمِ) بالمؤمنين، وهما اسمان من أسمائه تعالى، يتضمنان إثبات صفة الرحمة لله تعالى كما يليق بجلاله.']
+ara_quranuthmanihaf ara-quranuthmanihaf Arabic
+ara_quranuthmanihaf1 ara-quranuthmanihaf1 Arabic
+eng_muhammadtaqiudd eng-muhammadtaqiudd English
+fas_abdolmohammaday fas-abdolmohammaday Persian
+fas_nasermakaremshi fas-nasermakaremshi Persian
+hin_maulanaazizulha_la hin-maulanaazizulha-la Hindi
+hin_maulanaazizulha hin-maulanaazizulha Hindi
+hin_muhammadfarooqk_la hin-muhammadfarooqk-la Hindi
+hin_muhammadfarooqk hin-muhammadfarooqk Hindi
+hin_suhelfarooqkhan_la hin-suhelfarooqkhan-la Hindi
+hin_suhelfarooqkhan hin-suhelfarooqkhan Hindi
+urd_fatehmuhammadja urd-fatehmuhammadja Urdu
+alq b'ERR HTTP Error 503: Service Temporarily Unavailable'
