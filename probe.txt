@@ -1,0 +1,27 @@
+== https://cdn.islamic.network/quran/audio/64/ar.mahermuaiqly/1.mp3
+HTTP/2 200 
+content-type: audio/mpeg
+content-length: 30934
+== https://cdn.islamic.network/quran/audio/128/ar.mahermuaiqly/1.mp3
+HTTP/2 200 
+content-type: audio/mpeg
+content-length: 30913
+== https://cdn.islamic.network/quran/audio/64/ar.mahermuaiqly/6236.mp3
+HTTP/2 200 
+content-type: audio/mpeg
+content-length: 33440
+== https://everyayah.com/data/Maher_AlMuaiqly_64kbps/001001.mp3
+HTTP/2 200 
+content-type: audio/mpeg
+content-length: 90341
+access-control-allow-origin: *
+access-control-allow-headers: Server, x-goog-meta-frames, Content-Length, Content-Type, Range, X-Requested-With, If-Modified-Since, If-None-Match
+access-control-expose-headers: Server, x-goog-meta-frames, Content-Length, Content-Type, Range, X-Requested-With, If-Modified-Since, If-None-Match
+== https://everyayah.com/data/MaherAlMuaiqly128kbps/001001.mp3
+HTTP/2 200 
+content-type: audio/mpeg
+content-length: 90341
+access-control-allow-origin: *
+access-control-allow-headers: Server, x-goog-meta-frames, Content-Length, Content-Type, Range, X-Requested-With, If-Modified-Since, If-None-Match
+access-control-expose-headers: Server, x-goog-meta-frames, Content-Length, Content-Type, Range, X-Requested-With, If-Modified-Since, If-None-Match
+ok=6231 bad=5 total_MB=583.7
