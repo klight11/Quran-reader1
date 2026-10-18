@@ -9,11 +9,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Download Quran translations, hadith and fonts
-        run: python3 scripts/fetch_data.py www | tee fetch-log.txt
+        run: python3 -u scripts/fetch_data.py www > fetch-log.txt 2>&1; echo "exit=$?" >> fetch-log.txt; ls -R www | head -50 >> fetch-log.txt; du -sh www/* >> fetch-log.txt 2>&1 || true
       - name: Commit data in pieces
         run: |
           git config user.name "github-actions"; git config user.email "actions@github.com"
-          du -sh www/data www/data/* www/fonts | tee -a fetch-log.txt
+          git status --short | head -5
           git add fetch-log.txt; git commit -m "fetch log" -q; git push -q || true
           for d in www/fonts www/data/manifest.json www/data/quran www/data/hadith/books.json www/data/hadith/*/; do
             git add "$d"
