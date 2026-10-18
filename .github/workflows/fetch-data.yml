@@ -1,4 +1,4 @@
-name: Fetch Quran data
+name: Fetch data
 on:
   workflow_dispatch:
 permissions:
@@ -8,43 +8,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Download and validate Quran text
-        run: |
-          set -e
-          mkdir -p data
-          curl -fsSL --retry 5 https://api.alquran.cloud/v1/quran/quran-uthmani -o data/ar.json
-          curl -fsSL --retry 5 https://api.alquran.cloud/v1/quran/en.sahih -o data/en.json
-          python3 - <<'PY'
-          import json
-          ar=json.load(open('data/ar.json'))['data']['surahs']; en=json.load(open('data/en.json'))['data']['surahs']
-          assert len(ar)==114 and len(en)==114
-          out={'ar':[[a['text'] for a in s['ayahs']] for s in ar],'en':[[a['text'] for a in s['ayahs']] for s in en]}
-          assert sum(len(x) for x in out['ar'])==6236 and sum(len(x) for x in out['en'])==6236
-          for i in range(114): assert len(out['ar'][i])==len(out['en'][i])
-          json.dump(out,open('www/quran-data.json','w'),ensure_ascii=False,separators=(',',':'))
-          print('ok', sum(len(x) for x in out['ar']))
-          PY
-          rm -rf data
-      - name: Probe audio sources
-        run: |
-          {
-          for u in \
-            "https://cdn.islamic.network/quran/audio/64/ar.mahermuaiqly/1.mp3" \
-            "https://cdn.islamic.network/quran/audio/128/ar.mahermuaiqly/1.mp3" \
-            "https://cdn.islamic.network/quran/audio/64/ar.mahermuaiqly/6236.mp3" \
-            "https://everyayah.com/data/Maher_AlMuaiqly_64kbps/001001.mp3" \
-            "https://everyayah.com/data/MaherAlMuaiqly128kbps/001001.mp3"; do
-            echo "== $u"; curl -sSI -m 30 -H "Origin: https://appassets.androidplatform.net" "$u" | grep -i -E "^HTTP|content-length|access-control|content-type" ; done
-          } > probe.txt 2>&1 || true
-          cat probe.txt
-      - name: Measure total audio size (64kbps CDN)
-        run: |
-          seq 1 6236 | xargs -P 24 -I{} sh -c 'curl -sSI -m 30 https://cdn.islamic.network/quran/audio/64/ar.mahermuaiqly/{}.mp3 | tr -d "\r" | awk -v n={} "BEGIN{c=0;l=0} /^HTTP/{c=\$2} tolower(\$1)==\"content-length:\"{l=\$2} END{print n,c,l}"' > sizes.txt || true
-          awk '{ if ($2==200) {ok++; t+=$3} else bad++ } END { printf "ok=%d bad=%d total_MB=%.1f\n", ok, bad, t/1048576 }' sizes.txt | tee -a probe.txt
-          rm -f sizes.txt
-      - name: Commit results
+      - name: Download Quran translations, hadith and fonts
+        run: python3 scripts/fetch_data.py www | tee fetch-log.txt
+      - name: Commit data
         run: |
           git config user.name "github-actions"; git config user.email "actions@github.com"
-          git add www/quran-data.json probe.txt
-          git commit -m "Add bundled Quran text and audio probe" || true
+          git add www/data www/fonts
+          git commit -m "Add Quran translations, hadith books and fonts" || true
           git push
