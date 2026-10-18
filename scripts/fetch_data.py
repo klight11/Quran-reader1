@@ -27,30 +27,44 @@ def fail(m):
 manifest = {'quran': {}, 'hadith': {}}
 
 # ---------------- Quran ----------------
-Q = 'https://api.alquran.cloud/v1/quran/'
-EDITIONS = [  # file key, edition id
-    ('ar', 'quran-uthmani'),
-    ('en', 'en.sahih'),
-    ('hi', 'hi.hindi'),
-    ('ps', 'ps.abdulwali'),
-    ('fa', 'fa.makarem'),
-    ('ur', 'ur.jalandhry'),
-    ('arT', 'ar.muyassar'),   # Arabic simplified tafsir (the "Arabic" translation option)
+# Arabic Uthmani (Hafs) text: fawazahmed0 quran-api. Translations: Tanzil.
+AR_URL = 'https://cdn.jsdelivr.net/gh/fawazahmed0/quran-api@1/editions/ara-quranuthmanihaf.json'
+ar = json.loads(get(AR_URL))['quran']
+if len(ar) != 6236: fail('Arabic: %d verses' % len(ar))
+by = {}
+for v in ar: by.setdefault(v['chapter'], []).append(v['text'].strip())
+arabic = [by[i] for i in range(1, 115)]
+counts0 = [len(x) for x in arabic]
+if sum(counts0) != 6236 or any(not t for s_ in arabic for t in s_): fail('Arabic text incomplete')
+size = dump('%s/data/quran/ar.json' % ROOT, arabic)
+manifest['quran']['ar'] = {'name': 'Quran Uthmani (Hafs)', 'source': 'fawazahmed0/quran-api', 'bytes': size}
+print('quran ar', size)
+
+TANZIL = 'https://tanzil.net/trans/'
+EDITIONS = [  # key, tanzil id
+    ('en', 'en.sahih'), ('hi', 'hi.hindi'), ('ps', 'ps.abdulwali'), ('fa', 'fa.makarem'),
+    ('ur', 'ur.jalandhry'), ('arT', 'ar.muyassar'),
 ]
-counts0 = None
-for key, ed in EDITIONS:
-    d = json.loads(get(Q + ed))['data']
-    ss = d['surahs']
-    if len(ss) != 114: fail('%s: %d surahs' % (ed, len(ss)))
-    c = [len(s['ayahs']) for s in ss]
-    if sum(c) != 6236: fail('%s: %d verses' % (ed, sum(c)))
-    counts0 = counts0 or c
-    if c != counts0: fail('%s: verse counts differ from Arabic' % ed)
-    texts = [[a['text'].strip() for a in s['ayahs']] for s in ss]
-    if any(not t for s in texts for t in s): fail('%s: empty verse' % ed)
-    size = dump('%s/data/quran/%s.json' % (ROOT, key), texts)
-    manifest['quran'][key] = {'edition': ed, 'name': d['edition']['englishName'], 'author': d['edition'].get('name', ''), 'bytes': size}
-    print('quran', key, ed, size)
+for key, tid in EDITIONS:
+    txt = get(TANZIL + tid).decode('utf-8')
+    rows = {}
+    for line in txt.split('\n'):
+        line = line.rstrip('\r')
+        if not line or line.startswith('#'): continue
+        parts = line.split('|', 2)
+        if len(parts) != 3: continue
+        rows[(int(parts[0]), int(parts[1]))] = parts[2].strip()
+    out = []
+    for si, n in enumerate(counts0, 1):
+        sr = []
+        for a_ in range(1, n + 1):
+            t = rows.get((si, a_))
+            if not t: fail('%s: missing %d:%d' % (tid, si, a_))
+            sr.append(t)
+        out.append(sr)
+    size = dump('%s/data/quran/%s.json' % (ROOT, key), out)
+    manifest['quran'][key] = {'name': tid, 'source': 'tanzil.net', 'bytes': size}
+    print('quran', key, tid, size)
 
 # ---------------- Hadith ----------------
 H = 'https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/%s.json'
