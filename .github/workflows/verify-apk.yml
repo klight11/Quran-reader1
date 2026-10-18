@@ -1,0 +1,64 @@
+name: Verify APK offline
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release tag to test
+        default: v5
+permissions:
+  contents: write
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download release APK
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release download "${{ inputs.tag }}" -p app-debug.apk -D . 
+      - name: Inspect APK
+        run: |
+          ls -l app-debug.apk | tee report.txt
+          mkdir x && unzip -q app-debug.apk 'assets/*' -d x
+          echo "mp3 files: $(ls x/assets/audio/*.mp3 | wc -l)" | tee -a report.txt
+          echo "text files: $(ls x/assets/data/*.json | tr '\n' ' ')" | tee -a report.txt
+          echo "audio MB: $(du -sm x/assets/audio | cut -f1)" | tee -a report.txt
+          unzip -v app-debug.apk 'assets/audio/001001.mp3' | tail -3 | tee -a report.txt
+      - name: Offline playback test
+        run: |
+          pip install -q playwright && python -m playwright install --with-deps chromium >/dev/null 2>&1
+          cd x && (python3 -m http.server 8000 >/dev/null 2>&1 &) ; sleep 2; cd ..
+          cat > t.py <<'PY'
+          from playwright.sync_api import sync_playwright
+          out=[]
+          with sync_playwright() as p:
+              br=p.chromium.launch(args=['--host-resolver-rules=MAP appassets.androidplatform.net 127.0.0.1:8000','--autoplay-policy=no-user-gesture-required'])
+              pg=br.new_page(viewport={'width':390,'height':800})
+              errs=[]; pg.on('pageerror',lambda e:errs.append(str(e)))
+              blocked=[]
+              def guard(route):
+                  u=route.request.url
+                  if 'appassets.androidplatform.net' in u: route.continue_()
+                  else: blocked.append(u); route.abort()
+              pg.route('**/*',guard)
+              pg.goto('http://appassets.androidplatform.net:8000/assets/index.html#/s/112'); pg.wait_for_selector('.v',timeout=20000)
+              out.append('verses shown: %d' % pg.locator('.v').count())
+              out.append('first verse: '+pg.inner_text('.v .ar')[:60])
+              pg.click('[data-act=playall]'); pg.wait_for_timeout(2500)
+              st=pg.evaluate("()=>{var a=document.querySelector('audio');return null}")
+              info=pg.evaluate("()=>document.getElementById('plt').textContent")
+              out.append('player: '+info)
+              out.append('internet requests blocked: %d' % len(blocked))
+              out.append('page errors: %s' % errs)
+              # Fatiha too (no bismillah file)
+              pg.goto('http://appassets.androidplatform.net:8000/assets/index.html#/s/1'); pg.wait_for_selector('.v')
+              out.append('fatiha verses: %d' % pg.locator('.v').count())
+              br.close()
+          print('\n'.join(out)); open('report.txt','a').write('\n'.join(out)+'\n')
+          PY
+          python t.py
+      - name: Commit report
+        run: |
+          rm -rf x app-debug.apk t.py
+          git config user.name "github-actions"; git config user.email "actions@github.com"
+          mv report.txt verify.txt; git add verify.txt; git commit -m "APK verification report" ; git push
