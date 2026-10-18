@@ -263,6 +263,29 @@
     if (mem.has(n)) return Promise.resolve(mem.get(n));
     return kvGet('s:' + n).then(function (s) {
       if (s) { mem.set(n, s); return s; }
+      return loadBundled(n).then(function (b) {
+        if (b) { mem.set(n, b); kvSet('s:' + n, b); return b; }
+        return fetchSurah(n);
+      });
+    });
+  }
+
+  // The Android app ships the whole text inside itself (data/ar.json, data/en.json).
+  var bundled = null;
+  function loadBundled(n) {
+    if (!IN_APP) return Promise.resolve(null);
+    if (!bundled) {
+      var f = function (u) { return fetch(u).then(function (r) { if (!r.ok) throw new Error('no'); return r.json(); }); };
+      bundled = Promise.all([f('data/ar.json'), f('data/en.json')]).then(function (x) { return x; }, function () { return null; });
+    }
+    return bundled.then(function (x) {
+      if (!x) return null;
+      try { return build(n, x[0].surahs[n - 1].ayahs, x[1].surahs[n - 1] && x[1].surahs[n - 1].ayahs); } catch (e) { return null; }
+    });
+  }
+
+  function fetchSurah(n) {
+    return Promise.resolve().then(function () {
       return getJSON(API + '/surah/' + n + '/editions/quran-uthmani,en.sahih').then(function (d) {
         var a = d.filter(function (x) { return x.edition.identifier === 'quran-uthmani'; })[0];
         var e = d.filter(function (x) { return x.edition.identifier === 'en.sahih'; })[0];
@@ -309,11 +332,14 @@
   var OFF = [0];
   META.forEach(function (m, i) { OFF[i + 1] = OFF[i] + m.n; });
   var pad3 = function (n) { return ('00' + n).slice(-3); };
+  var IN_APP = location.hostname === 'appassets.androidplatform.net'; // the Android app ships audio + text inside
   function audioUrls(sn, a) {
-    if (a === 0) return ['https://everyayah.com/data/Maher_AlMuaiqly_64kbps/001001.mp3',
-                         'https://cdn.islamic.network/quran/audio/128/ar.mahermuaiqly/1.mp3'];
-    return ['https://everyayah.com/data/Maher_AlMuaiqly_64kbps/' + pad3(sn) + pad3(a) + '.mp3',
-            'https://cdn.islamic.network/quran/audio/128/ar.mahermuaiqly/' + (OFF[sn - 1] + a) + '.mp3'];
+    if (a === 0) { sn = 1; a = 1; }
+    var k = pad3(sn) + pad3(a), u = [];
+    if (IN_APP) u.push('audio/' + k + '.mp3');
+    u.push('https://everyayah.com/data/Maher_AlMuaiqly_64kbps/' + k + '.mp3');
+    u.push('https://cdn.islamic.network/quran/audio/128/ar.mahermuaiqly/' + (OFF[sn - 1] + a) + '.mp3');
+    return u;
   }
   var AU = { el: new Audio(), s: 0, a: 0, on: false, src: 0 };
   AU.el.preload = 'auto';
@@ -383,7 +409,7 @@
   AU.el.addEventListener('ended', auNext);
   AU.el.addEventListener('error', function () {
     if (!AU.s) return;
-    if (AU.src === 0) { AU.src = 1; auLoad(); return; }
+    if (AU.src < audioUrls(AU.s, AU.a).length - 1) { AU.src++; auLoad(); return; }
     toast('Could not load the recitation. Check your internet connection.');
     auStop();
   });
