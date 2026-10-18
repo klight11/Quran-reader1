@@ -81,11 +81,17 @@ BOOKS = [
 ]
 clean = lambda t: re.sub(r'[ \t]+', ' ', (t or '').replace('\r', '')).strip()
 
+MIRRORS = [H, 'https://fastly.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/%s.json',
+           'https://raw.githubusercontent.com/fawazahmed0/hadith-api/1/editions/%s.json']
 def edition(code):
-    try:
-        return json.loads(get(H % code, tries=4))
-    except Exception as e:
-        print('missing edition', code, e); return None
+    for rnd in range(3):
+        for m in MIRRORS:
+            try:
+                return json.loads(get(m % code, tries=2))
+            except Exception as e:
+                last = e
+        time.sleep(5)
+    print('missing edition', code, last); return None
 
 index = []
 for bk, en_name, ar_name in BOOKS:
