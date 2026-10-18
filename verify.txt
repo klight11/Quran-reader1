@@ -1,0 +1,13 @@
+-rw-r--r-- 1 runner runner 616883529 Oct 18 02:04 app-debug.apk
+mp3 files: 6236
+text files: x/assets/data/ar.json x/assets/data/en.json 
+audio MB: 598
+   90341  Stored    90341   0% 1981-01-01 01:01 a0d11354  assets/audio/001001.mp3
+--------          -------  ---                            -------
+   90341            90341   0%                            1 file
+verses shown: 4
+first verse: قُلْ هُوَ ٱللَّهُ أَحَدٌ ١
+player: Al-Ikhlas · Bismillah
+internet requests blocked: 0
+page errors: []
+fatiha verses: 7
