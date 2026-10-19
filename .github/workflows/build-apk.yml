@@ -3,6 +3,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
+    paths-ignore: ['**.md', 'scripts/fetch_data.py', '.github/workflows/fetch-data.yml']
 permissions:
   contents: write
 jobs:
@@ -19,11 +20,19 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.10.2'
-      - name: Download Quran text and recitation audio
-        run: python3 scripts/fetch_assets.py android/app/src/main/assets
+      - name: Put the web app inside the Android project
+        run: |
+          mkdir -p android/app/src/main/assets
+          cp -r www/. android/app/src/main/assets/
+          du -sh android/app/src/main/assets
       - name: Build debug APK
         working-directory: android
         run: gradle assembleDebug --no-daemon
+      - name: Test the APK offline
+        run: |
+          pip install -q playwright
+          python -m playwright install --with-deps chromium >/dev/null 2>&1
+          python scripts/verify_apk.py android/app/build/outputs/apk/debug/app-debug.apk
       - uses: actions/upload-artifact@v4
         with:
           name: Quran-Reader-APK
